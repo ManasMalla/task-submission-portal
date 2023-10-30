@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { DM_Sans } from "next/font/google";
+import Image from 'next/image';
+import { DM_Sans } from 'next/font/google';
 import {
   Box,
   Button,
@@ -14,30 +14,33 @@ import {
   Radio,
   TextField,
   InputAdornment,
-} from "@mui/material";
+} from '@mui/material';
 
-import { useState } from "react";
-import { amber, purple } from "@mui/material/colors";
-import { data } from "./form-responses";
-import { Link } from "react-feather";
-import FileTask from "./components/file-upload";
-import AndroidDevelopment from "./components/tasks/android-development";
-import MachineLearningDevelopment from "./components/tasks/machine-learning-development";
-import FlutterDevelopment from "./components/tasks/flutter-development";
-import CloudDevelopment from "./components/tasks/cloud-development";
-import WebDevelopment from "./components/tasks/web-development";
-import CompetitiveProgrammingDevelopment from "./components/tasks/cp-development";
-import WomanAmbassador from "./components/tasks/woman-ambassador";
-import Operations from "./components/tasks/operations";
-import Creatives from "./components/tasks/creatives";
-import SocialMedia from "./components/tasks/social-media";
-import PublicRelations from "./components/tasks/public-relations";
-import ContentWriting from "./components/tasks/content";
-import Logistics from "./components/tasks/logistics";
-import Hosting from "./components/tasks/hosting";
-import Photography from "./components/tasks/photography";
+import { useState, useEffect } from 'react';
+import { amber, purple } from '@mui/material/colors';
+import { data } from './form-responses';
+import { Link } from 'react-feather';
+import FileTask from './components/file-upload';
+import AndroidDevelopment from './components/tasks/android-development';
+import MachineLearningDevelopment from './components/tasks/machine-learning-development';
+import FlutterDevelopment from './components/tasks/flutter-development';
+import CloudDevelopment from './components/tasks/cloud-development';
+import WebDevelopment from './components/tasks/web-development';
+import CompetitiveProgrammingDevelopment from './components/tasks/cp-development';
+import WomanAmbassador from './components/tasks/woman-ambassador';
+import Operations from './components/tasks/operations';
+import Creatives from './components/tasks/creatives';
+import SocialMedia from './components/tasks/social-media';
+import PublicRelations from './components/tasks/public-relations';
+import ContentWriting from './components/tasks/content';
+import Logistics from './components/tasks/logistics';
+import Hosting from './components/tasks/hosting';
+import Photography from './components/tasks/photography';
 
-const dmSans = DM_Sans({ subsets: ["latin"] });
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
+
+const dmSans = DM_Sans({ subsets: ['latin'] });
 
 export default function Home() {
   <script src="https://apis.google.com/js/platform.js" async defer></script>;
@@ -52,7 +55,7 @@ export default function Home() {
       <div className="w-full h-screen bg-black opacity-[55%] absolute z-10" />
       <div className="absolute z-20 text-white">
         <div className="px-6 py-3 lg:p-12">
-          {" "}
+          {' '}
           <div className="flex">
             <img src="logo-gdg.png" className="h-8 mr-4" />
             <div>
@@ -80,7 +83,7 @@ export default function Home() {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 48 48"
                   // xmlns:xlink="http://www.w3.org/1999/xlink"
-                  style={{ display: "block" }}
+                  style={{ display: 'block' }}
                 >
                   <path
                     fill="#EA4335"
@@ -101,17 +104,20 @@ export default function Home() {
                   <path fill="none" d="M0 0h48v48H0z"></path>
                 </svg>
               </div>
-              <span className="gsi-material-button-contents px-2">
-                Sign in with Google
-              </span>
-              <span
-                className=" px-2"
-                style={{
-                  display: "none",
-                }}
-              >
-                Sign in with Google
-              </span>
+              <GoogleOAuthProvider clientId="1010379975924-uu04sdp61suebvkkvshj7vgbcu4aami2.apps.googleusercontent.com">
+                <GoogleLogin
+                  onSuccess={(credentialResponse: any) => {
+                    const decoded = jwtDecode(credentialResponse.credential);
+                    console.log(credentialResponse);
+                    console.log('Success');
+                  }}
+                  onError={() => {
+                    console.log('Login Failed');
+                  }}
+                />
+                ;
+              </GoogleOAuthProvider>
+              ;
             </div>
           </button>
         </div>
