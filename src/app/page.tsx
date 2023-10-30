@@ -108,7 +108,7 @@ export default function Home() {
                 <GoogleLogin
                   onSuccess={(credentialResponse: any) => {
                     const decoded = jwtDecode(credentialResponse.credential);
-                    console.log(credentialResponse);
+                    console.log(decoded);
                     console.log('Success');
                   }}
                   onError={() => {
