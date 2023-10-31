@@ -1,11 +1,17 @@
-import { InputAdornment, Radio, TextField } from "@mui/material";
-import { Link } from "react-feather";
-import FileTask from "../file-upload";
+import { InputAdornment, Radio, TextField } from '@mui/material';
+import { Link } from 'react-feather';
+import FileTask from '../file-upload';
+import LinkEditText from '../link-edit-text';
+import { useState } from 'react';
 
 export default function WomanAmbassador(props: {
   radioIndex: number;
   setRadioIndex: (arg0: number) => void;
+  response: string | undefined;
+  setResponse: (arg0: string) => void;
 }) {
+  const [report, setReport] = useState('');
+  const [recording, setRecording] = useState('');
   return (
     <div>
       <h3 className="pt-3 my-3 font-bold text-md">Task</h3>
@@ -18,7 +24,7 @@ export default function WomanAmbassador(props: {
           <b>
             Write a short essay (500 words) on the importance of diversity and
             inclusion in the tech industry.
-          </b>{" "}
+          </b>{' '}
           Share your ideas for promoting gender diversity in tech through a blog
           on Medium/HashNode.
         </li>
@@ -26,7 +32,7 @@ export default function WomanAmbassador(props: {
           <b>
             Design a poster or infographic that raises awareness of a specific
             women's issue.
-          </b>{" "}
+          </b>{' '}
           The poster or infographic should be visually appealing and easy to
           understand, and it should communicate the student's message in a clear
           and concise way. Include the poster or infographic in the blog you’ve
@@ -37,7 +43,7 @@ export default function WomanAmbassador(props: {
             Launch a podcast to share stories and insights from women in and
             around you, highlighting their challenges and try coming up with
             solutions or talk through them, making them feel better.
-          </b>{" "}
+          </b>{' '}
           This could be a great way to inspire other women and raise awareness
           of the challenges and opportunities that women face in the
           organization.
@@ -47,29 +53,19 @@ export default function WomanAmbassador(props: {
       <div className="my-2">
         <b>Link to Blog (for task 1 and 2)</b>
       </div>
-      <TextField
-        className="my-3 w-full"
-        placeholder="Link"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Link />
-            </InputAdornment>
-          ),
+      <LinkEditText
+        value={recording}
+        onChange={(value) => {
+          setRecording(value);
         }}
       />
       <div className="my-2">
         <b>Link to Podcast</b>
       </div>
-      <TextField
-        className="my-3 w-full"
-        placeholder="Link"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Link />
-            </InputAdornment>
-          ),
+      <LinkEditText
+        value={recording}
+        onChange={(value) => {
+          setRecording(value);
         }}
       />
     </div>

@@ -1,11 +1,18 @@
-import { InputAdornment, Radio, TextField } from "@mui/material";
-import { Link } from "react-feather";
-import FileTask from "../file-upload";
+import { InputAdornment, Radio, TextField } from '@mui/material';
+import { Link } from 'react-feather';
+import FileTask from '../file-upload';
+import LinkEditText from '../link-edit-text';
+import { useState } from 'react';
 
 export default function CloudDevelopment(props: {
   radioIndex: number;
   setRadioIndex: (arg0: number) => void;
+  response: string | undefined;
+  setResponse: (arg0: string) => void;
+  
 }) {
+  const [report, setReport] = useState('');
+  const [recording, setRecording] = useState('');
   return (
     <div>
       <h3 className="pt-3 my-3 font-bold text-md">Task</h3>
@@ -19,15 +26,10 @@ export default function CloudDevelopment(props: {
         and some learning and challenges you’ve faced along through a blog on
         Medium/HashNode.
       </p>
-      <TextField
-        className="my-3 w-full"
-        placeholder="Link"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Link />
-            </InputAdornment>
-          ),
+      <LinkEditText
+        value={recording}
+        onChange={(value) => {
+          setRecording(value);
         }}
       />
       <div>Screen recording</div>
@@ -35,15 +37,10 @@ export default function CloudDevelopment(props: {
         You can also share a screen recording when completing the task to be
         featured on the official DSC handle.
       </p>
-      <TextField
-        className="my-3 w-full"
-        placeholder="Link"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Link />
-            </InputAdornment>
-          ),
+      <LinkEditText
+        value={recording}
+        onChange={(value) => {
+          setRecording(value);
         }}
       />
     </div>

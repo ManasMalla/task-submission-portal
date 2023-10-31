@@ -1,11 +1,17 @@
-import { InputAdornment, Radio, TextField } from "@mui/material";
-import { Edit3, Link } from "react-feather";
-import FileTask from "../file-upload";
+import { InputAdornment, Radio, TextField } from '@mui/material';
+import { Edit3, Link } from 'react-feather';
+import FileTask from '../file-upload';
+import { useState } from 'react';
 
 export default function Hosting(props: {
   radioIndex: number;
   setRadioIndex: (arg0: number) => void;
+  response: string | undefined;
+  setResponse: (arg0: string) => void;
+  user: string;
 }) {
+  const [report, setReport] = useState('');
+  const [recording, setRecording] = useState('');
   return (
     <div>
       <h3 className="pt-3 my-3 font-bold text-md">Task</h3>
@@ -38,7 +44,7 @@ export default function Hosting(props: {
             Google Developer Student Clubs chapter. Showcase your hosting skills
             and charisma.
           </p>
-          <FileTask taskName={"video"} />
+          <FileTask user={props.user} domain={'hosting'} taskName={'video'} />
         </li>
       </ol>
     </div>

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { DM_Sans } from "next/font/google";
+import Image from 'next/image';
+import { DM_Sans } from 'next/font/google';
 import {
   Box,
   Button,
@@ -15,36 +15,36 @@ import {
   TextField,
   InputAdornment,
   CircularProgress,
-} from "@mui/material";
+} from '@mui/material';
 
-import { Dispatch, SetStateAction, useState } from "react";
-import { amber, purple } from "@mui/material/colors";
-import { data } from "../form-responses";
-import { Link } from "react-feather";
-import FileTask from "../components/file-upload";
-import AndroidDevelopment from "../components/tasks/android-development";
-import MachineLearningDevelopment from "../components/tasks/machine-learning-development";
-import FlutterDevelopment from "../components/tasks/flutter-development";
-import CloudDevelopment from "../components/tasks/cloud-development";
-import WebDevelopment from "../components/tasks/web-development";
-import CompetitiveProgrammingDevelopment from "../components/tasks/cp-development";
-import WomanAmbassador from "../components/tasks/woman-ambassador";
-import Operations from "../components/tasks/operations";
-import Creatives from "../components/tasks/creatives";
-import SocialMedia from "../components/tasks/social-media";
-import PublicRelations from "../components/tasks/public-relations";
-import ContentWriting from "../components/tasks/content";
-import Logistics from "../components/tasks/logistics";
-import Hosting from "../components/tasks/hosting";
-import Photography from "../components/tasks/photography";
+import { Dispatch, SetStateAction, useState } from 'react';
+import { amber, purple } from '@mui/material/colors';
+import { data } from '../form-responses';
+import { Link } from 'react-feather';
+import FileTask from '../components/file-upload';
+import AndroidDevelopment from '../components/tasks/android-development';
+import MachineLearningDevelopment from '../components/tasks/machine-learning-development';
+import FlutterDevelopment from '../components/tasks/flutter-development';
+import CloudDevelopment from '../components/tasks/cloud-development';
+import WebDevelopment from '../components/tasks/web-development';
+import CompetitiveProgrammingDevelopment from '../components/tasks/cp-development';
+import WomanAmbassador from '../components/tasks/woman-ambassador';
+import Operations from '../components/tasks/operations';
+import Creatives from '../components/tasks/creatives';
+import SocialMedia from '../components/tasks/social-media';
+import PublicRelations from '../components/tasks/public-relations';
+import ContentWriting from '../components/tasks/content';
+import Logistics from '../components/tasks/logistics';
+import Hosting from '../components/tasks/hosting';
+import Photography from '../components/tasks/photography';
 
-const dmSans = DM_Sans({ subsets: ["latin"] });
+const dmSans = DM_Sans({ subsets: ['latin'] });
 
 export default function Task() {
   const [state, setState] = useState(0);
-  const email = window.localStorage.getItem("email");
+  const email = window.localStorage.getItem('email');
   const getCurrentTheme = () =>
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
+    window.matchMedia('(prefers-color-scheme: dark)').matches;
   const [isDarkTheme, setIsDarkTheme] = useState(getCurrentTheme());
   const theme = createTheme({
     palette: {
@@ -52,27 +52,28 @@ export default function Task() {
         main: amber[600],
       },
       secondary: {
-        main: "#d97706",
+        main: '#d97706',
       },
     },
   });
 
   //TODO replace email with google sign in mail
-  var userdata = data.filter((user) => user["Email Address"] === email)[0];
+  var userdata = data.filter((user) => user['Email Address'] === email)[0];
   userdata === undefined
-    ? (userdata = data.filter((user) => user["Your GITAM Email"] === email)[0])
+    ? (userdata = data.filter((user) => user['Your GITAM Email'] === email)[0])
     : userdata;
   const domain =
     userdata === undefined
       ? undefined
-      : userdata["Select the domains you're interested in"].split(", ").sort()[
+      : userdata["Select the domains you're interested in"].split(', ').sort()[
           state
         ];
+
   const [responses, setResponse] = useState<string[] | undefined[] | undefined>(
     userdata === undefined
       ? undefined
       : userdata["Select the domains you're interested in"]
-          .split(", ")
+          .split(', ')
           .map((_) => undefined)
   );
   const [radioIndex, setRadioIndex] = useState(0);
@@ -90,7 +91,7 @@ export default function Task() {
         className={`flex overflow-y-clip h-screen flex-col lg:flex-row items-center justify-between ${dmSans.className}`}
       >
         <img
-          src={isDarkTheme ? "/dark-left-header.png" : "/left-header.png"}
+          src={isDarkTheme ? '/dark-left-header.png' : '/left-header.png'}
           className="h-screen w-auto"
         />
         <div className={`w-full h-screen p-12 space-y-3 overflow-y-scroll`}>
@@ -105,7 +106,7 @@ export default function Task() {
             eleifend. Nulla sodales felis nisi, ac cursus felis porta ac.
           </p>
           <StyledEngineProvider injectFirst>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <Tabs
                 textColor="primary"
                 value={state}
@@ -116,10 +117,10 @@ export default function Task() {
                 aria-label="basic tabs example"
               >
                 {userdata["Select the domains you're interested in"]
-                  .split(", ")
+                  .split(', ')
                   .sort()
                   .map((tab, i) => {
-                    console.log("User application: " + tab);
+                    console.log('User application: ' + tab);
                     return (
                       <Tab
                         key={tab}
@@ -131,7 +132,7 @@ export default function Task() {
               </Tabs>
             </Box>
             <div>
-              {domain === "Android Development" ? (
+              {domain === 'Android Development' ? (
                 <AndroidDevelopment
                   radioIndex={radioIndex}
                   setRadioIndex={(index: number) => {
@@ -142,81 +143,257 @@ export default function Task() {
                   }
                   setResponse={(response: string) => {
                     if (responses === undefined) {
-                      alert("Error occured. Please try again.");
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
+                  user= {userdata.Name}
+                />
+              ) : domain === 'Machine Learning' ? (
+                <MachineLearningDevelopment
+                  radioIndex={radioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
+                  user= {userdata.Name}
+                />
+              ) : domain === 'Flutter' ? (
+                <FlutterDevelopment
+                  radioIndex={radioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
+                  user= {userdata.Name}
+                />
+              ) : domain === 'Cloud' ? (
+                <CloudDevelopment
+                  radioIndex={radioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
                     } else {
                       responses[state] = response;
                     }
                   }}
                 />
-              ) : domain === "Machine Learning" ? (
-                <MachineLearningDevelopment
-                  radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
-                />
-              ) : domain === "Flutter" ? (
-                <FlutterDevelopment
-                  radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
-                />
-              ) : domain === "Cloud" ? (
-                <CloudDevelopment
-                  radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
-                />
-              ) : domain === "Web Development" ? (
+              ) : domain === 'Web Development' ? (
                 <WebDevelopment
                   radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
+                  user= {userdata.Name}
                 />
-              ) : domain === "Competitive Programming" ? (
+              ) : domain === 'Competitive Programming' ? (
                 <CompetitiveProgrammingDevelopment
                   radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
                 />
-              ) : domain === "Women Ambassador" ? (
+              ) : domain === 'Women Ambassador' ? (
                 <WomanAmbassador
                   radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
                 />
-              ) : domain === "Operations" ? (
+              ) : domain === 'Operations' ? (
                 <Operations
                   radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
                 />
-              ) : domain === "Graphic Designing" ? (
+              ) : domain === 'Graphic Designing' ? (
                 <Creatives
                   radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
+                  user= {userdata.Name}
                 />
-              ) : domain === "Social Media and Marketing" ? (
+              ) : domain === 'Social Media and Marketing' ? (
                 <SocialMedia
                   radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
                 />
-              ) : domain === "Public Relations" ? (
+              ) : domain === 'Public Relations' ? (
                 <PublicRelations
                   radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
                 />
-              ) : domain === "Content Writing" ? (
+              ) : domain === 'Content Writing' ? (
                 <ContentWriting
                   radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
                 />
-              ) : domain === "Logistics" ? (
+              ) : domain === 'Logistics' ? (
                 <Logistics
                   radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
+                  user= {userdata.Name}
                 />
-              ) : domain === "Event Hosting (Anchoring)" ? (
+              ) : domain === 'Event Hosting (Anchoring)' ? (
                 <Hosting
                   radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
+                  user= {userdata.Name}
                 />
-              ) : domain === "Photography/ Videography" ? (
+              ) : domain === 'Photography/ Videography' ? (
                 <Photography
                   radioIndex={radioIndex}
-                  setRadioIndex={setRadioIndex}
+                  setRadioIndex={(index: number) => {
+                    setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert('Error occured. Please try again.');
+                    } else {
+                      responses[state] = response;
+                    }
+                  }}
+                  user= {userdata.Name}
                 />
               ) : (
                 <div></div>

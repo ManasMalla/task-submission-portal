@@ -1,18 +1,19 @@
-import { Button, InputAdornment, Radio, TextField } from "@mui/material";
-import { Link } from "react-feather";
-import FileTask from "../file-upload";
-import { useState } from "react";
-import LinkEditText from "../link-edit-text";
+import { Button, InputAdornment, Radio, TextField } from '@mui/material';
+import { Link } from 'react-feather';
+import FileTask from '../file-upload';
+import { useState } from 'react';
+import LinkEditText from '../link-edit-text';
 
 export default function AndroidDevelopment(props: {
   radioIndex: number;
   setRadioIndex: (arg0: number) => void;
   response: string | undefined;
   setResponse: (arg0: string) => void;
+  user: string;
 }) {
   const [file, setFile] = useState(undefined);
-  const [report, setReport] = useState("");
-  const [recording, setRecording] = useState("");
+  const [report, setReport] = useState('');
+  const [recording, setRecording] = useState('');
   return (
     <div>
       <h3 className="pt-3 my-3 font-bold text-md">Task</h3>
@@ -49,11 +50,11 @@ export default function AndroidDevelopment(props: {
           recipe.
         </span>
       </p>
-      <FileTask taskName={undefined} />
+      <FileTask user={props.user} domain={'android'} taskName={undefined} />
       <div>Brief Report</div>
       <p>
         Provide a brief report on the app’s working and developer journey
-        through a blog on Medium/HashNode.{" "}
+        through a blog on Medium/HashNode.{' '}
       </p>
       <LinkEditText
         value={report}
