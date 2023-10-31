@@ -30,7 +30,7 @@ export default function PublicRelations(props: {
         <br />
         The article should capture the enthusiasm and interest displayed by
         students in participating in the GUSAC carnival, delve into its
-        organization, and provide a succinct summary of the event's
+        organization, and provide a succinct summary of the event&apos;s
         significance.
         <br />
       </p>

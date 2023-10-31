@@ -30,7 +30,7 @@ export default function MachineLearningDevelopment(props: {
       />
       <div>Brief Report</div>
       <p>
-        Provide a brief report on the model's accuracy, performance, application
+        Provide a brief report on the model&apos;s accuracy, performance, application
         and usage through a blog on Medium/HashNode.
       </p>
       <LinkEditText

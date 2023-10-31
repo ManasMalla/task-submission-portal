@@ -31,11 +31,11 @@ export default function WomanAmbassador(props: {
         <li>
           <b>
             Design a poster or infographic that raises awareness of a specific
-            women's issue.
+            women&apos;s issue.
           </b>{' '}
           The poster or infographic should be visually appealing and easy to
-          understand, and it should communicate the student's message in a clear
-          and concise way. Include the poster or infographic in the blog you’ve
+          understand, and it should communicate the student&apos;s message in a clear
+          and concise way. Include the poster or infographic in the blog you&apos;ve
           written in step (i).
         </li>
         <li>
