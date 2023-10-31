@@ -10,7 +10,7 @@ export default function FileTask(props: {
   taskName: string | undefined | null;
 }) {
   const octokit = new Octokit({
-    auth: "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",
+    auth: "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",
   });
   return (
     <div
@@ -37,7 +37,7 @@ export default function FileTask(props: {
               await octokit.rest.repos.createOrUpdateFileContents({
                 owner: "dsc-gitam",
                 repo: "recruitment-tasks-23",
-                path: "contents/$userId/test.dart",
+                path: "contents/$userId/test.txt",
                 message: "Commit with REST",
                 content: "Hi",
               });
