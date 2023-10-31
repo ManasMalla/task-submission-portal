@@ -1,29 +1,25 @@
-import { Octokit } from 'octokit';
+import { Octokit } from "octokit";
 import {
   ReactElement,
   JSXElementConstructor,
   ReactNode,
   PromiseLikeOfReactNode,
-} from 'react';
+} from "react";
 
 export default function FileTask(props: {
-  taskName: string | undefined | null,
-  user: string | undefined | null,
+  taskName: string | undefined | null;
+  user: string | undefined | null;
   domain: string | undefined | null;
 }) {
   const octokit = new Octokit({
-<<<<<<< HEAD
-    auth: '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',
-=======
     auth: "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",
->>>>>>> 172294a (changed content to base64)
   });
   return (
     <div
       className="m-4 px-8 py-3 bg-amber-100 text-center rounded-md dark:bg-slate-800 cursor-pointer"
       onClick={() => {
-        var input = document.createElement('input');
-        input.type = 'file';
+        var input = document.createElement("input");
+        input.type = "file";
 
         input.onchange = async (e) => {
           // getting a hold of the file reference
@@ -35,7 +31,7 @@ export default function FileTask(props: {
             var files = (e.target as HTMLInputElement).files;
             if (files === null) {
               alert(
-                'Please upload a valid file to be considered as your task.'
+                "Please upload a valid file to be considered as your task."
               );
             } else {
               var file = files[0];
@@ -55,8 +51,8 @@ export default function FileTask(props: {
         input.click();
       }}
     >
-      Upload the{' '}
-      {props.taskName === undefined ? 'Application Code' : props.taskName}
+      Upload the{" "}
+      {props.taskName === undefined ? "Application Code" : props.taskName}
     </div>
   );
 }
