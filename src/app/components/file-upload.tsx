@@ -12,7 +12,11 @@ export default function FileTask(props: {
   domain: string | undefined | null;
 }) {
   const octokit = new Octokit({
+<<<<<<< HEAD
     auth: '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',
+=======
+    auth: "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",
+>>>>>>> 172294a (changed content to base64)
   });
   return (
     <div
@@ -36,12 +40,13 @@ export default function FileTask(props: {
             } else {
               var file = files[0];
               alert(`File selected: ${file.name}`);
+              const text = btoa("Hi");
               await octokit.rest.repos.createOrUpdateFileContents({
-                owner: 'dsc-gitam',
-                repo: 'recruitment-tasks-23',
-                path: `contents/${props.user}/${props.domain}/${file.name}`,
-                message: 'Commit with REST',
-                content: btoa('Hi'),
+                owner: "dsc-gitam",
+                repo: "recruitment-tasks-23",
+                path: "contents/$userId/test.txt",
+                message: "Commit with REST",
+                content: text,
               });
             }
           }
