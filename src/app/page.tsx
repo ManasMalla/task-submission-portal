@@ -1,43 +1,6 @@
 "use client";
 
-import Image from "next/image";
 import { DM_Sans } from "next/font/google";
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Tabs,
-  Tab,
-  ThemeProvider,
-  createTheme,
-  StyledEngineProvider,
-  Radio,
-  TextField,
-  InputAdornment,
-} from "@mui/material";
-
-import { useState, useEffect } from "react";
-import { amber, purple } from "@mui/material/colors";
-import { data } from "./form-responses";
-import { Link } from "react-feather";
-import FileTask from "./components/file-upload";
-import AndroidDevelopment from "./components/tasks/android-development";
-import MachineLearningDevelopment from "./components/tasks/machine-learning-development";
-import FlutterDevelopment from "./components/tasks/flutter-development";
-import CloudDevelopment from "./components/tasks/cloud-development";
-import WebDevelopment from "./components/tasks/web-development";
-import CompetitiveProgrammingDevelopment from "./components/tasks/cp-development";
-import WomanAmbassador from "./components/tasks/woman-ambassador";
-import Operations from "./components/tasks/operations";
-import Creatives from "./components/tasks/creatives";
-import SocialMedia from "./components/tasks/social-media";
-import PublicRelations from "./components/tasks/public-relations";
-import ContentWriting from "./components/tasks/content";
-import Logistics from "./components/tasks/logistics";
-import Hosting from "./components/tasks/hosting";
-import Photography from "./components/tasks/photography";
-
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import GoogleSSO from "./components/google-sso";
 import { useRouter } from "next/navigation";

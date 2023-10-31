@@ -1,11 +1,18 @@
-import { InputAdornment, Radio, TextField } from "@mui/material";
+import { Button, InputAdornment, Radio, TextField } from "@mui/material";
 import { Link } from "react-feather";
 import FileTask from "../file-upload";
+import { useState } from "react";
+import LinkEditText from "../link-edit-text";
 
 export default function AndroidDevelopment(props: {
   radioIndex: number;
   setRadioIndex: (arg0: number) => void;
+  response: string | undefined;
+  setResponse: (arg0: string) => void;
 }) {
+  const [file, setFile] = useState(undefined);
+  const [report, setReport] = useState("");
+  const [recording, setRecording] = useState("");
   return (
     <div>
       <h3 className="pt-3 my-3 font-bold text-md">Task</h3>
@@ -48,15 +55,10 @@ export default function AndroidDevelopment(props: {
         Provide a brief report on the app’s working and developer journey
         through a blog on Medium/HashNode.{" "}
       </p>
-      <TextField
-        className="my-3 w-full"
-        placeholder="Link"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Link />
-            </InputAdornment>
-          ),
+      <LinkEditText
+        value={report}
+        onChange={(value) => {
+          setReport(value);
         }}
       />
       <div>Screen recording</div>
@@ -64,17 +66,15 @@ export default function AndroidDevelopment(props: {
         You can also share a screen recording when you are building the app to
         be featured on the official DSC handle.
       </p>
-      <TextField
-        className="my-3 w-full"
-        placeholder="Link"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Link />
-            </InputAdornment>
-          ),
+      <LinkEditText
+        value={recording}
+        onChange={(value) => {
+          setRecording(value);
         }}
       />
+      <Button variant="outlined" onClick={() => {}}>
+        Submit Task
+      </Button>
     </div>
   );
 }

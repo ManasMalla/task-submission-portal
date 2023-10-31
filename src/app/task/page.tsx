@@ -17,7 +17,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { amber, purple } from "@mui/material/colors";
 import { data } from "../form-responses";
 import { Link } from "react-feather";
@@ -68,6 +68,13 @@ export default function Task() {
       : userdata["Select the domains you're interested in"].split(", ").sort()[
           state
         ];
+  const [responses, setResponse] = useState<string[] | undefined[] | undefined>(
+    userdata === undefined
+      ? undefined
+      : userdata["Select the domains you're interested in"]
+          .split(", ")
+          .map((_) => undefined)
+  );
   const [radioIndex, setRadioIndex] = useState(0);
   return email === null ? (
     <ThemeProvider theme={theme}>
@@ -115,6 +122,7 @@ export default function Task() {
                     console.log("User application: " + tab);
                     return (
                       <Tab
+                        key={tab}
                         className={`text-inherit ${dmSans.className} font-normal  normal-case`}
                         label={tab}
                       />
@@ -128,6 +136,16 @@ export default function Task() {
                   radioIndex={radioIndex}
                   setRadioIndex={(index: number) => {
                     setRadioIndex(index);
+                  }}
+                  response={
+                    responses === undefined ? undefined : responses[state]
+                  }
+                  setResponse={(response: string) => {
+                    if (responses === undefined) {
+                      alert("Error occured. Please try again.");
+                    } else {
+                      responses[state] = response;
+                    }
                   }}
                 />
               ) : domain === "Machine Learning" ? (

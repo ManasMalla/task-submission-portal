@@ -2460,7 +2460,7 @@ export const data = [
     "GITAM Regd. Number": "VU22CSEN0100009",
     "Department/Branch": "School of Technology",
     "Select the domains you're interested in":
-      "Content Writing, Logistics, Event Hosting (Anchoring), Photography/ Videography",
+      "Android Development, Logistics, Event Hosting (Anchoring), Photography/ Videography",
     "Select the non-tech domains you're interested in": "",
     "Are you involved in any other clubs/organizations?": "",
     "Your LinkedIn Profile Link": "https://linkedin.com/in/manasmalla",
