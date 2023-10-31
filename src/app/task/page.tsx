@@ -58,7 +58,10 @@ export default function Task() {
   });
 
   //TODO replace email with google sign in mail
-  const userdata = data.filter((user) => user["Email Address"] === email)[0];
+  var userdata = data.filter((user) => user["Email Address"] === email)[0];
+  userdata === undefined
+    ? (userdata = data.filter((user) => user["Your GITAM Email"] === email)[0])
+    : userdata;
   const domain =
     userdata === undefined
       ? undefined
