@@ -120,6 +120,7 @@ export default function Task() {
         <img
           src={isDarkTheme ? "/dark-left-header.png" : "/left-header.png"}
           className="h-screen w-auto"
+          alt='DSC GITAM Logo'
         />
         <div className={`w-full h-screen p-12 space-y-3 overflow-y-scroll`}>
           <h1 className="text-5xl">Welcome back,</h1>
