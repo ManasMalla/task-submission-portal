@@ -178,6 +178,8 @@ export default function Task() {
               <Tabs
                 textColor="primary"
                 value={state}
+                variant="scrollable"
+                scrollButtons="auto"
                 onChange={(_, value) => {
                   setState(value);
                   setRadioIndex(0);
