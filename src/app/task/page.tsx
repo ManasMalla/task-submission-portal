@@ -44,7 +44,7 @@ const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export default function Task() {
   const [state, setState] = useState(0);
-  const email = window.localStorage.getItem("email");
+  const email = global.window && window.localStorage.getItem("email");
   const getCurrentTheme = () =>
     window.matchMedia("(prefers-color-scheme: dark)").matches;
   const [isDarkTheme, setIsDarkTheme] = useState(getCurrentTheme());
@@ -98,7 +98,7 @@ export default function Task() {
         <User className="w-8 h-8 mb-8" />
         <h1 className="text-2xl">User not found</h1>
         <p className="mt-4">
-          Please try with the mail you've filled in the Google Form.
+          Please try with the mail you&apos;ve filled in the Google Form.
         </p>
         <p className="mt-2">
           If you have not filled in the Google form,{" "}
@@ -126,7 +126,7 @@ export default function Task() {
             Developer Student Clubs, GITAM University. Your dedication and
             passion are truly inspiring.
             <br />
-            To move forward, please submit your required tasks below. We're
+            To move forward, please submit your required tasks below. We&apos;re
             excited to review your work and learn more about you.
           </p>
           <StyledEngineProvider injectFirst>

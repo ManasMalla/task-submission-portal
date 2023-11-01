@@ -34,8 +34,8 @@ export default function WebDevelopment(props: {
       <h3 className="pt-3 my-3 font-bold text-md">Task</h3>
       <p>
         Create a personal portfolio website using the web tech-stack of your
-        choice. Include at least two sections - an "About Me" section and a
-        "Projects" section.
+        choice. Include at least two sections - an &quot;About Me&quot; section
+        and a &quot;Projects&quot; section.
         <br />
       </p>
       <FileTask
@@ -49,8 +49,8 @@ export default function WebDevelopment(props: {
       <div>Brief Report</div>
       <p>
         Provide a brief report describing your journey while building the
-        website and some learning and challenges you’ve faced along through a
-        blog on Medium/HashNode.
+        website and some learning and challenges you&apos;ve faced along through
+        a blog on Medium/HashNode.
       </p>
       <LinkEditText
         value={report}
