@@ -149,14 +149,19 @@ export default function Task() {
   ) : (
     <ThemeProvider theme={theme}>
       <main
-        className={`flex overflow-y-clip h-screen flex-col lg:flex-row items-center justify-between ${dmSans.className}`}
+        className={`flex lg:overflow-y-clip h-screen flex-col lg:flex-row items-center justify-between ${dmSans.className}`}
       >
         <img
           src={isDarkTheme ? "/dark-left-header.png" : "/left-header.png"}
-          className="h-screen w-auto"
+          className="h-screen w-auto hidden lg:flex"
           alt="DSC GITAM Logo"
         />
-        <div className={`w-full h-screen p-12 space-y-3 overflow-y-scroll`}>
+        <img
+          src={"/banner.png"}
+          className="w-auto lg:hidden"
+          alt="DSC GITAM Logo"
+        />
+        <div className={`w-full h-screen p-12 space-y-3 lg:overflow-y-scroll`}>
           <h1 className="text-5xl">Welcome back,</h1>
           <h2 className="text-3xl">{userdata.Name}</h2>
           {/*TODO Change the placeholder text showing we can't wait to check your application*/}
