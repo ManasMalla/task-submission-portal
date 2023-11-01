@@ -41,12 +41,14 @@ import Photography from "../components/tasks/photography";
 import { Octokit } from "octokit";
 import WomanAmbassador from "../components/tasks/woman-ambassador";
 import { getEmail } from "./localStorage";
+import { useRouter } from "next/navigation";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export default function Task() {
   const [state, setState] = useState(0);
   var [email, setEmail] = useState<string | null | undefined>(undefined);
+  const router = useRouter();
 
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   useEffect(() => {
@@ -110,6 +112,13 @@ export default function Task() {
       : userdata["Select the domains you're interested in"]
           .split(", ")
           .map((_) => undefined);
+  const [taskState, setTaskState] = useState<boolean[]>([false, false, false]);
+  useEffect(() => {
+    if (localStorage.getItem("responses") !== null) {
+      responses = JSON.parse(localStorage.getItem("responses")!);
+      console.log(responses);
+    }
+  });
   const [radioIndex, setRadioIndex] = useState(0);
   return email === null || email === undefined ? (
     <ThemeProvider theme={theme}>
@@ -182,8 +191,7 @@ export default function Task() {
                         className={`text-inherit ${dmSans.className} font-normal  normal-case`}
                         label={tab}
                         icon={
-                          responses === undefined ||
-                          responses[state] === undefined ? undefined : (
+                          !taskState[i] ? undefined : (
                             <CheckCircle className="w-4 h-4" />
                           )
                         }
@@ -208,6 +216,13 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
                       console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
@@ -236,6 +251,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -263,6 +286,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -290,6 +321,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -312,6 +351,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -339,6 +386,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -361,6 +416,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -383,6 +446,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -405,6 +476,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -432,6 +511,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -454,6 +541,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -476,6 +571,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -498,6 +601,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -525,6 +636,18 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -552,6 +675,14 @@ export default function Task() {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
+                      localStorage.setItem(
+                        "responses",
+                        JSON.stringify(responses)
+                      );
+                      var newTaskState = taskState;
+                      newTaskState[state] = true;
+                      setTaskState(newTaskState);
+                      console.log(responses);
                       checkApplicationStatus(
                         responses === undefined ||
                           responses.filter((value) => value === undefined)
@@ -612,7 +743,9 @@ export default function Task() {
                 }
               );
               checkApplicationStatus(true);
+              localStorage.clear();
               alert("Submitted Application Successfully");
+              router.push("/");
             }}
           >
             Submit Application
