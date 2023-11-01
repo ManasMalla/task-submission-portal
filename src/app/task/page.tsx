@@ -61,7 +61,7 @@ export default function Task() {
   });
 
   const octokit = new Octokit({
-    auth: "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",
+    auth: "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",
   });
   //TODO replace email with google sign in mail
   var userdata = data.filter((user) => user["Email Address"] === email)[0];
