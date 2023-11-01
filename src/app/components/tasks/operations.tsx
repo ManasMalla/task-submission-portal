@@ -11,7 +11,6 @@ import LinkEditText from "../link-edit-text";
 import { useState } from "react";
 
 export default function Operations(props: {
-  radioIndex: number;
   setRadioIndex: (arg0: number) => void;
   response: string | undefined;
   setResponse: (arg0: string) => void;

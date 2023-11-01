@@ -52,7 +52,7 @@ export default function Photography(props: {
           if (file === undefined) {
             alert("Upload a valid task");
           } else {
-            const url = `contents/${props.user}/android/${file.name}`;
+            const url = `contents/${props.user}/photography/${file.name}`;
             setLoader(true);
             await getBase64(file).then(async (data) => {
               await props.octokit.rest.repos.createOrUpdateFileContents({
