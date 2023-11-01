@@ -104,15 +104,14 @@ export default function Task() {
           state
         ];
 
-  const [responses, setResponse] = useState<string[] | undefined[] | undefined>(
+  var responses: string[] | undefined | undefined[] =
     userdata === undefined
       ? undefined
       : userdata["Select the domains you're interested in"]
           .split(", ")
-          .map((_) => undefined)
-  );
+          .map((_) => undefined);
   const [radioIndex, setRadioIndex] = useState(0);
-  return email === null ? (
+  return email === null || email === undefined ? (
     <ThemeProvider theme={theme}>
       <main
         className={`flex overflow-y-clip h-screen flex-col lg:flex-row items-center justify-center ${dmSans.className}`}
@@ -146,7 +145,7 @@ export default function Task() {
         <img
           src={isDarkTheme ? "/dark-left-header.png" : "/left-header.png"}
           className="h-screen w-auto"
-          alt='DSC GITAM Logo'
+          alt="DSC GITAM Logo"
         />
         <div className={`w-full h-screen p-12 space-y-3 overflow-y-scroll`}>
           <h1 className="text-5xl">Welcome back,</h1>
@@ -205,7 +204,7 @@ export default function Task() {
                     responses === undefined ? undefined : responses[state]
                   }
                   setResponse={(response: string) => {
-                    if (responses === undefined) {
+                    if (responses == undefined) {
                       alert("Error occured. Please try again.");
                     } else {
                       responses[state] = response;
@@ -573,7 +572,7 @@ export default function Task() {
           </StyledEngineProvider>
           <Button
             variant="contained"
-            disabled={true}
+            disabled={ableToSubmitApplication}
             onClick={async () => {
               const request = await octokit.request(
                 "GET /repos/dsc-gitam/recruitment-tasks-23/contents/applications.json",
