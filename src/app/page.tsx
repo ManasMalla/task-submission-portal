@@ -56,8 +56,8 @@ export default function Home() {
           <p className="text-sm lg:text-base lg:w-[48ch] ">
             <br />
             Authenticate with the email address that you have filled in the
-            Google Forms with. If you aren&apos;t sure, just authenticate with your
-            GITAM email address.
+            Google Forms with. If you aren&apos;t sure, just authenticate with
+            your GITAM email address.
           </p>
           {/* <div
             id="g_id_onload"

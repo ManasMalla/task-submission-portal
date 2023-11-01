@@ -17,7 +17,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { amber, purple } from "@mui/material/colors";
 import { data } from "../form-responses";
 import { CheckCircle, Link, User } from "react-feather";
@@ -39,15 +39,19 @@ import Hosting from "../components/tasks/hosting";
 import Photography from "../components/tasks/photography";
 import { Octokit } from "octokit";
 import WomanAmbassador from "../components/tasks/woman-ambassador";
+import { getEmail } from "./localStorage";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export default function Task() {
   const [state, setState] = useState(0);
-  const email = global.window && window.localStorage.getItem("email");
-  const getCurrentTheme = () =>
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const [isDarkTheme, setIsDarkTheme] = useState(getCurrentTheme());
+  var [email, setEmail] = useState<string | null | undefined>(undefined);
+
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  useEffect(() => {
+    setEmail(getEmail());
+    setIsDarkTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+  }, []);
   const [ableToSubmitApplication, checkApplicationStatus] = useState(true);
   const theme = createTheme({
     palette: {
