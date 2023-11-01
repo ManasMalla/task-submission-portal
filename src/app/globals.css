@@ -14,9 +14,8 @@ body{
 
 button[class*='MuiButton-containedPrimary'] {
   background-color: #fbc004;
-  
-  }
-  
+}
+
 
   .MuiBox-root
   {
@@ -25,10 +24,16 @@ button[class*='MuiButton-containedPrimary'] {
   
   
 @media (prefers-color-scheme: dark) {
+
     body {
         background-color: #000;
         color: #fff;
     }
+    button[class*='MuiButton-containedPrimary'] {
+      background-color: #fbc004;
+      
+      }
+     
     .MuiBox-root
     {
       border-bottom-color: #3d3d3d;
@@ -43,5 +48,4 @@ button[class*='MuiButton-containedPrimary'] {
   .MuiInputBase-root, .MuiInputAdornment-root {
     color: #FFF;
   }
-  
 }

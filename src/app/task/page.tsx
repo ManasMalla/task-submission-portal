@@ -15,10 +15,11 @@ import {
   TextField,
   InputAdornment,
   CircularProgress,
+  PaletteMode,
 } from "@mui/material";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { amber, purple } from "@mui/material/colors";
+import { amber, grey, purple } from "@mui/material/colors";
 import { data } from "../form-responses";
 import { CheckCircle, Link, User } from "react-feather";
 import FileTask from "../components/file-upload";
@@ -53,14 +54,39 @@ export default function Task() {
     setIsDarkTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
   }, []);
   const [ableToSubmitApplication, checkApplicationStatus] = useState(true);
+
   const theme = createTheme({
+    palette: isDarkTheme
+      ? {
+          // palette values for light mode
+          primary: {
+            main: amber[600],
+          },
+          secondary: {
+            main: "#d97706",
+          },
+          action: { disabledBackground: "#5a5a5a", disabled: "#2f2f2f" },
+        }
+      : {
+          primary: {
+            main: amber[600],
+          },
+          secondary: {
+            main: "#d97706",
+          },
+          action: { disabledBackground: "#e0e0e0", disabled: "#bcbcbc" },
+        },
+  });
+  const buttonTheme = createTheme({
     palette: {
+      mode: "dark",
       primary: {
         main: amber[600],
       },
       secondary: {
         main: "#d97706",
       },
+      action: { disabledBackground: grey[900], disabled: grey[400] },
     },
   });
   const octokit = new Octokit({
@@ -547,7 +573,7 @@ export default function Task() {
           </StyledEngineProvider>
           <Button
             variant="contained"
-            disabled={ableToSubmitApplication}
+            disabled={true}
             onClick={async () => {
               const request = await octokit.request(
                 "GET /repos/dsc-gitam/recruitment-tasks-23/contents/applications.json",
