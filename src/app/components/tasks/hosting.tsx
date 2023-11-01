@@ -1,7 +1,15 @@
-import { InputAdornment, Radio, TextField } from '@mui/material';
-import { Edit3, Link } from 'react-feather';
-import FileTask from '../file-upload';
-import { useState } from 'react';
+import {
+  Button,
+  CircularProgress,
+  InputAdornment,
+  Radio,
+  TextField,
+} from "@mui/material";
+import { Edit3, Link } from "react-feather";
+import FileTask from "../file-upload";
+import { useState } from "react";
+import { Octokit } from "octokit";
+import { getBase64 } from "../get_base64";
 
 export default function Hosting(props: {
   radioIndex: number;
@@ -9,10 +17,18 @@ export default function Hosting(props: {
   response: string | undefined;
   setResponse: (arg0: string) => void;
   user: string;
+  email: string;
+  octokit: Octokit;
 }) {
-  const [report, setReport] = useState('');
-  const [recording, setRecording] = useState('');
-  return (
+  const [speech, setSpeech] = useState("");
+
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const [isLoading, setLoader] = useState(false);
+  return isLoading ? (
+    <div className="flex items-center justify-center">
+      <CircularProgress />
+    </div>
+  ) : (
     <div>
       <h3 className="pt-3 my-3 font-bold text-md">Task</h3>
       <ol className="list-decimal">
@@ -29,6 +45,10 @@ export default function Hosting(props: {
           <TextField
             className="my-3 w-full"
             placeholder="I, <name>, welcome you all to the Info Session of GDSC <college>...."
+            value={speech}
+            onChange={(event) => {
+              setSpeech(event.target.value);
+            }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -44,9 +64,54 @@ export default function Hosting(props: {
             Google Developer Student Clubs chapter. Showcase your hosting skills
             and charisma.
           </p>
-          <FileTask user={props.user} domain={'hosting'} taskName={'video'} />
+          <FileTask
+            user={props.user}
+            domain={"hosting"}
+            taskName={"video"}
+            onFileSelected={(file) => {
+              setFile(file);
+            }}
+          />
         </li>
       </ol>
+      <Button
+        variant="outlined"
+        onClick={async () => {
+          if (speech === "") {
+            alert("Provide a valid url to the blog.");
+          } else {
+            if (file === undefined) {
+              alert("Upload a valid task");
+            } else {
+              const url = `contents/${props.user}/android/${file.name}`;
+              setLoader(true);
+              await getBase64(file).then(async (data) => {
+                await props.octokit.rest.repos.createOrUpdateFileContents({
+                  owner: "dsc-gitam",
+                  repo: "recruitment-tasks-23",
+                  path: url,
+                  message: "Commit with REST",
+                  content: btoa(atob(data.split(",")[1])),
+                  committer: {
+                    name: props.user,
+                    email: props.email,
+                  },
+                });
+              });
+              props.setResponse(
+                JSON.stringify({
+                  speech: speech,
+                  file: url,
+                })
+              );
+              setLoader(false);
+              alert(`Submitted task for hosting domain!`);
+            }
+          }
+        }}
+      >
+        Submit Task
+      </Button>
     </div>
   );
 }

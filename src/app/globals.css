@@ -16,6 +16,7 @@ button[class*='MuiButton-containedPrimary'] {
   background-color: #fbc004;
   
   }
+  
 
   .MuiBox-root
   {
@@ -44,4 +45,3 @@ button[class*='MuiButton-containedPrimary'] {
   }
   
 }
-

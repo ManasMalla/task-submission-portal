@@ -1,19 +1,29 @@
-import { InputAdornment, Radio, TextField } from '@mui/material';
-import { Link } from 'react-feather';
-import FileTask from '../file-upload';
-import LinkEditText from '../link-edit-text';
-import { useState } from 'react';
+import {
+  Button,
+  CircularProgress,
+  InputAdornment,
+  Radio,
+  TextField,
+} from "@mui/material";
+import { Link } from "react-feather";
+import FileTask from "../file-upload";
+import LinkEditText from "../link-edit-text";
+import { useState } from "react";
 
 export default function CloudDevelopment(props: {
   radioIndex: number;
   setRadioIndex: (arg0: number) => void;
   response: string | undefined;
   setResponse: (arg0: string) => void;
-  
 }) {
-  const [report, setReport] = useState('');
-  const [recording, setRecording] = useState('');
-  return (
+  const [report, setReport] = useState("");
+  const [recording, setRecording] = useState("");
+  const [isLoading, setLoader] = useState(false);
+  return isLoading ? (
+    <div className="flex items-center justify-center">
+      <CircularProgress />
+    </div>
+  ) : (
     <div>
       <h3 className="pt-3 my-3 font-bold text-md">Task</h3>
       <p className="ml-4 mb-4">
@@ -27,9 +37,9 @@ export default function CloudDevelopment(props: {
         Medium/HashNode.
       </p>
       <LinkEditText
-        value={recording}
+        value={report}
         onChange={(value) => {
-          setRecording(value);
+          setReport(value);
         }}
       />
       <div>Screen recording</div>
@@ -43,6 +53,26 @@ export default function CloudDevelopment(props: {
           setRecording(value);
         }}
       />
+      <Button
+        variant="outlined"
+        onClick={async () => {
+          if (report === "") {
+            alert("Provide a valid url to the blog.");
+          } else {
+            setLoader(true);
+            props.setResponse(
+              JSON.stringify({
+                report: report,
+                recording: recording,
+              })
+            );
+            setLoader(false);
+            alert(`Submitted task for Cloud domain!`);
+          }
+        }}
+      >
+        Submit Task
+      </Button>
     </div>
   );
 }
