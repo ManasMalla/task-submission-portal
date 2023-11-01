@@ -117,6 +117,13 @@ export default function Task() {
     if (localStorage.getItem("responses") !== null) {
       responses = JSON.parse(localStorage.getItem("responses")!);
       console.log(responses);
+      responses?.forEach((e, i) => {
+        if (e != undefined) {
+          var tempTaskState = taskState;
+          tempTaskState[i] = true;
+          setTaskState(tempTaskState);
+        }
+      });
     }
   });
   const [radioIndex, setRadioIndex] = useState(0);
