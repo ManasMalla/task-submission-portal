@@ -4,6 +4,7 @@ import { DM_Sans } from "next/font/google";
 import { jwtDecode } from "jwt-decode";
 import GoogleSSO from "./components/google-sso";
 import { useRouter } from "next/navigation";
+import Script from 'next/script';
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 export type dataCredential = {
@@ -32,7 +33,7 @@ export default function Home() {
     <main
       className={`flex overflow-y-clip h-screen flex-col lg:flex-row lg:items-end justify-end lg:justify-between ${dmSans.className}`}
     >
-      <script src="https://accounts.google.com/gsi/client" async></script>
+      <Script src="https://accounts.google.com/gsi/client" async strategy='beforeInteractive'/>
 
       <img
         src="gdsc-gitam.jpg"
