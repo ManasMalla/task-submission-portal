@@ -100,9 +100,7 @@ export default function WebDevelopment(props: {
           if (report === '') {
             alert('Provide a valid url to the blog.');
           } else {
-            if (file === undefined || fileUrl === '' || fileUrl === '') {
-              alert('Upload a valid task');
-            } else {
+            if (file !== undefined) {
               const url = `contents/${props.user}/web/${file.name}`;
               setLoader(true);
               await getBase64(file).then(async (data) => {
@@ -122,12 +120,27 @@ export default function WebDevelopment(props: {
                 JSON.stringify({
                   report: report,
                   recording: recording,
-                  file: fileUrl === '' ? url : fileUrl,
+                  file: url,
+                })
+              );
+
+              setLoader(false);
+              alert(`Submitted task for Web domain!`);  
+            }
+            else if (fileUrl !== '') {
+              setLoader(true);
+              props.setResponse(
+                JSON.stringify({
+                  report: report,
+                  recording: recording,
+                  file: fileUrl,
                 })
               );
 
               setLoader(false);
               alert(`Submitted task for Web domain!`);
+            } else {
+              alert('Upload a valid task');
             }
           }
         }}
