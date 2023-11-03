@@ -1,16 +1,17 @@
+'use client';
 import {
   Button,
   CircularProgress,
   InputAdornment,
   Radio,
   TextField,
-} from "@mui/material";
-import { Link } from "react-feather";
-import FileTask from "../file-upload";
-import { use, useState } from "react";
-import LinkEditText from "../link-edit-text";
-import { Octokit } from "octokit";
-import { getBase64 } from "../get_base64";
+} from '@mui/material';
+import { Link } from 'react-feather';
+import FileTask from '../file-upload';
+import { use, useState } from 'react';
+import LinkEditText from '../link-edit-text';
+import { Octokit } from 'octokit';
+import { getBase64 } from '../get_base64';
 
 export default function AndroidDevelopment(props: {
   radioIndex: number;
@@ -22,9 +23,20 @@ export default function AndroidDevelopment(props: {
   octokit: Octokit;
 }) {
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [report, setReport] = useState("");
-  const [recording, setRecording] = useState("");
+  const [fileSizeExceedsLimit, setFileSizeExceedsLimit] = useState(false);
+  const [report, setReport] = useState('');
+  const [recording, setRecording] = useState('');
   const [isLoading, setLoader] = useState(false);
+
+  const onFileSelected = (selectedFile: File) => {
+    if (selectedFile.size > 5 * 1024 * 1024) {
+      setFileSizeExceedsLimit(true);
+    } else {
+      setFile(selectedFile);
+      setFileSizeExceedsLimit(false);
+    }
+  };
+
   return isLoading ? (
     <div className="flex items-center justify-center">
       <CircularProgress />
@@ -67,16 +79,27 @@ export default function AndroidDevelopment(props: {
       </p>
       <FileTask
         user={props.user}
-        domain={"android"}
+        domain={'android'}
         taskName={undefined}
-        onFileSelected={(file: File) => {
-          setFile(file);
-        }}
+        onFileSelected={onFileSelected}
       />
+      {fileSizeExceedsLimit && (
+        <div>
+          <p className='text-lg text-red-500'>
+            The file size exceeds the limit of 5MB. Please upload a google drive link.
+          </p>
+          <LinkEditText
+            value={report}
+            onChange={(value) => {
+              setReport(value);
+            }}
+          />
+        </div>
+      )}
       <div>Brief Report</div>
       <p>
         Provide a brief report on the app’s working and developer journey
-        through a blog on Medium/HashNode.{" "}
+        through a blog on Medium/HashNode.{' '}
       </p>
       <LinkEditText
         value={report}
@@ -98,21 +121,21 @@ export default function AndroidDevelopment(props: {
       <Button
         variant="outlined"
         onClick={async () => {
-          if (report === "") {
-            alert("Provide a valid url to the blog.");
+          if (report === '') {
+            alert('Provide a valid url to the blog.');
           } else {
             if (file === undefined) {
-              alert("Upload a valid task");
+              alert('Upload a valid task');
             } else {
               const url = `contents/${props.user}/android/${file.name}`;
               setLoader(true);
               await getBase64(file).then(async (data) => {
                 await props.octokit.rest.repos.createOrUpdateFileContents({
-                  owner: "dsc-gitam",
-                  repo: "recruitment-tasks-23",
+                  owner: 'dsc-gitam',
+                  repo: 'recruitment-tasks-23',
                   path: url,
-                  message: "Commit with REST",
-                  content: btoa(atob(data.split(",")[1])),
+                  message: 'Commit with REST',
+                  content: btoa(atob(data.split(',')[1])),
                   committer: {
                     name: props.user,
                     email: props.email,
