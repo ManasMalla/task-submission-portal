@@ -23,9 +23,21 @@ export default function Creatives(props: {
 }) {
   const [reel, setReelUrl] = useState("");
   const [file, setFile] = useState<File | undefined>(undefined);
-
-  const [file2, setFile2] = useState<File | undefined>(undefined);
+  const [file2, setFile2] = useState<File | undefined>(undefined); 
+  const [fileUrl, setFileUrl] = useState("");
+  const [fileUrl2, setFileUrl2] = useState("");
+  const [fileSizeExceedsLimit, setFileSizeExceedsLimit] = useState(false);
   const [isLoading, setLoader] = useState(false);
+
+  const onFileSelected = (selectedFile: File) => {
+    if (selectedFile.size > 5 * 1024 * 1024) {
+      setFileSizeExceedsLimit(true);
+    } else {
+      setFile(selectedFile);
+      setFileSizeExceedsLimit(false);
+    }
+  };
+
   return isLoading ? (
     <div className="flex items-center justify-center">
       <CircularProgress />
@@ -44,14 +56,28 @@ export default function Creatives(props: {
             Study Jams
           </b>
           <div className="my-2"></div>
-          <FileTask
-            user={props.user}
-            domain={"creatives"}
-            taskName={"post"}
-            onFileSelected={(file) => {
-              setFile(file);
+          {!fileSizeExceedsLimit && (
+        <FileTask
+          user={props.user}
+          domain={"web"}
+          taskName={"website code"}
+          onFileSelected={onFileSelected}
+        />
+      )}
+      {fileSizeExceedsLimit && (
+        <div className="text-center">
+          <p className="text-lg text-red-500">
+            The file size exceeds the limit of 5MB. Please upload a google drive
+            link.
+          </p>
+          <LinkEditText
+            value={fileUrl}
+            onChange={(value) => {
+              setFileUrl(value);
             }}
           />
+        </div>
+      )}
         </li>
         <li>
           <b>
@@ -72,14 +98,28 @@ export default function Creatives(props: {
         <li>
           <b>Prepare an infographic sharing your findings and learnings.</b>
 
-          <FileTask
-            user={props.user}
-            domain={"creatives2"}
-            taskName={"infographic"}
-            onFileSelected={(file) => {
-              setFile2(file);
+          {!fileSizeExceedsLimit && (
+        <FileTask
+          user={props.user}
+          domain={"creatives"}
+          taskName={"creatives"}
+          onFileSelected={onFileSelected}
+        />
+      )}
+      {fileSizeExceedsLimit && (
+        <div className="text-center">
+          <p className="text-lg text-red-500">
+            The file size exceeds the limit of 5MB. Please upload a google drive
+            link.
+          </p>
+          <LinkEditText
+            value={fileUrl2}
+            onChange={(value) => {
+              setFileUrl2(value);
             }}
           />
+        </div>
+      )}
         </li>
       </ol>
       <p>
@@ -92,7 +132,7 @@ export default function Creatives(props: {
           if (reel === "") {
             alert("Provide a valid url to the reel.");
           } else {
-            if (file2 === undefined || file === undefined) {
+            if ((file === undefined ||  fileUrl === '') || ( file2 === undefined || fileUrl2 === '')) {
               alert("Upload a valid task");
             } else {
               const url = `contents/${props.user}/creatives/${file.name}`;
@@ -126,8 +166,8 @@ export default function Creatives(props: {
               props.setResponse(
                 JSON.stringify({
                   reel: reel,
-                  file2: file2,
-                  file: url,
+                  file: fileUrl === "" ? url : fileUrl,
+                  file2: fileUrl2 === "" ? url2 : fileUrl2,
                 })
               );
               setLoader(false);

@@ -1,10 +1,16 @@
-import { Button, CircularProgress, InputAdornment, Radio, TextField } from "@mui/material";
-import { Link } from "react-feather";
-import FileTask from "../file-upload";
-import LinkEditText from "../link-edit-text";
-import { useState } from "react";
-import { Octokit } from "octokit";
-import { getBase64 } from "../get_base64";
+import {
+  Button,
+  CircularProgress,
+  InputAdornment,
+  Radio,
+  TextField,
+} from '@mui/material';
+import { Link } from 'react-feather';
+import FileTask from '../file-upload';
+import LinkEditText from '../link-edit-text';
+import { useState } from 'react';
+import { Octokit } from 'octokit';
+import { getBase64 } from '../get_base64';
 
 export default function FlutterDevelopment(props: {
   radioIndex: number;
@@ -15,10 +21,21 @@ export default function FlutterDevelopment(props: {
   email: string;
   octokit: Octokit;
 }) {
-  const [report, setReport] = useState("");
-  const [recording, setRecording] = useState("");
+  const [report, setReport] = useState('');
+  const [recording, setRecording] = useState('');
   const [file, setFile] = useState<File | undefined>(undefined);
+  const [fileUrl, setFileUrl] = useState('');
+  const [fileSizeExceedsLimit, setFileSizeExceedsLimit] = useState(false);
   const [isLoading, setLoader] = useState(false);
+
+  const onFileSelected = (selectedFile: File) => {
+    if (selectedFile.size > 5 * 1024 * 1024) {
+      setFileSizeExceedsLimit(true);
+    } else {
+      setFile(selectedFile);
+      setFileSizeExceedsLimit(false);
+    }
+  };
   return isLoading ? (
     <div className="flex items-center justify-center">
       <CircularProgress />
@@ -78,14 +95,28 @@ export default function FlutterDevelopment(props: {
           expenses, specify payers, and settle debts.
         </span>
       </p>
-      <FileTask
-        user={props.user}
-        domain={"flutter"}
-        taskName={undefined}
-        onFileSelected={(file) => {
-          setFile(file);
-        }}
-      />
+      {!fileSizeExceedsLimit && (
+        <FileTask
+          user={props.user}
+          domain={'flutter'}
+          taskName={'flutter code'}
+          onFileSelected={onFileSelected}
+        />
+      )}
+      {fileSizeExceedsLimit && (
+        <div className="text-center">
+          <p className="text-lg text-red-500">
+            The file size exceeds the limit of 5MB. Please upload a google drive
+            link.
+          </p>
+          <LinkEditText
+            value={fileUrl}
+            onChange={(value) => {
+              setFileUrl(value);
+            }}
+          />
+        </div>
+      )}
       <div>Brief Report</div>
       <p>
         Provide a brief report on the app’s performance and developer journey
@@ -111,21 +142,21 @@ export default function FlutterDevelopment(props: {
       <Button
         variant="outlined"
         onClick={async () => {
-          if (report === "") {
-            alert("Provide a valid url to the blog.");
+          if (report === '') {
+            alert('Provide a valid url to the blog.');
           } else {
-            if (file === undefined) {
-              alert("Upload a valid task");
+            if (file === undefined || fileUrl === '') {
+              alert('Upload a valid task');
             } else {
               const url = `contents/${props.user}/flutter/${file.name}`;
               setLoader(true);
               await getBase64(file).then(async (data) => {
                 await props.octokit.rest.repos.createOrUpdateFileContents({
-                  owner: "dsc-gitam",
-                  repo: "recruitment-tasks-23",
+                  owner: 'dsc-gitam',
+                  repo: 'recruitment-tasks-23',
                   path: url,
-                  message: "Commit with REST",
-                  content: btoa(atob(data.split(",")[1])),
+                  message: 'Commit with REST',
+                  content: btoa(atob(data.split(',')[1])),
                   committer: {
                     name: props.user,
                     email: props.email,
@@ -136,7 +167,7 @@ export default function FlutterDevelopment(props: {
                 JSON.stringify({
                   report: report,
                   recording: recording,
-                  file: url,
+                  file: fileUrl === '' ? url : fileUrl,
                 })
               );
               setLoader(false);

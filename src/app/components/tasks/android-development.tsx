@@ -23,6 +23,7 @@ export default function AndroidDevelopment(props: {
   octokit: Octokit;
 }) {
   const [file, setFile] = useState<File | undefined>(undefined);
+  const [fileUrl, setFileUrl] = useState('');
   const [fileSizeExceedsLimit, setFileSizeExceedsLimit] = useState(false);
   const [report, setReport] = useState('');
   const [recording, setRecording] = useState('');
@@ -85,8 +86,9 @@ export default function AndroidDevelopment(props: {
       />
       {fileSizeExceedsLimit && (
         <div>
-          <p className='text-lg text-red-500'>
-            The file size exceeds the limit of 5MB. Please upload a google drive link.
+          <p className="text-lg text-red-500">
+            The file size exceeds the limit of 5MB. Please upload a google drive
+            link.
           </p>
           <LinkEditText
             value={report}
@@ -124,7 +126,7 @@ export default function AndroidDevelopment(props: {
           if (report === '') {
             alert('Provide a valid url to the blog.');
           } else {
-            if (file === undefined) {
+            if (file === undefined || fileUrl === '') {
               alert('Upload a valid task');
             } else {
               const url = `contents/${props.user}/android/${file.name}`;
@@ -146,7 +148,7 @@ export default function AndroidDevelopment(props: {
                 JSON.stringify({
                   report: report,
                   recording: recording,
-                  file: url,
+                  file: fileUrl === '' ? url : fileUrl,
                 })
               );
               setLoader(false);
