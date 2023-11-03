@@ -1,12 +1,13 @@
 import { CircularProgress } from "@mui/material";
+import { getStaticProps } from "next/dist/build/templates/pages";
 import { useRef, useEffect } from "react";
-declare const google: any;
+declare const google: undefined | any;
 
 const GoogleSSO = (props: { onSuccess: (arg0: any) => void }) => {
   const g_sso = useRef(null);
 
   useEffect(() => {
-    if (google != undefined) {
+    if (google !== undefined) {
       if (g_sso.current) {
         google.accounts.id.initialize({
           client_id:

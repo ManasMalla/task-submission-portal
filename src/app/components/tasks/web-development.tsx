@@ -4,13 +4,13 @@ import {
   InputAdornment,
   Radio,
   TextField,
-} from '@mui/material';
-import { Link } from 'react-feather';
-import FileTask from '../file-upload';
-import LinkEditText from '../link-edit-text';
-import { useState } from 'react';
-import { Octokit } from 'octokit';
-import { getBase64 } from '../get_base64';
+} from "@mui/material";
+import { Link } from "react-feather";
+import FileTask from "../file-upload";
+import LinkEditText from "../link-edit-text";
+import { useState } from "react";
+import { Octokit } from "octokit";
+import { getBase64 } from "../get_base64";
 
 export default function WebDevelopment(props: {
   radioIndex: number;
@@ -22,9 +22,10 @@ export default function WebDevelopment(props: {
   octokit: Octokit;
 }) {
   const [file, setFile] = useState<File | undefined>(undefined);
+  const [fileUrl, setFileUrl] = useState("");
   const [fileSizeExceedsLimit, setFileSizeExceedsLimit] = useState(false);
-  const [report, setReport] = useState('');
-  const [recording, setRecording] = useState('');
+  const [report, setReport] = useState("");
+  const [recording, setRecording] = useState("");
   const [isLoading, setLoader] = useState(false);
 
   const onFileSelected = (selectedFile: File) => {
@@ -48,22 +49,24 @@ export default function WebDevelopment(props: {
         and a &quot;Projects&quot; section.
         <br />
       </p>
-      <FileTask
-        user={props.user}
-        domain={'web'}
-        taskName={'website code'}
-        onFileSelected={onFileSelected}
-      />
+      {!fileSizeExceedsLimit && (
+        <FileTask
+          user={props.user}
+          domain={"web"}
+          taskName={"website code"}
+          onFileSelected={onFileSelected}
+        />
+      )}
       {fileSizeExceedsLimit && (
-        <div className='text-center'>
+        <div className="text-center">
           <p className="text-lg text-red-500">
             The file size exceeds the limit of 5MB. Please upload a google drive
             link.
           </p>
           <LinkEditText
-            value={report}
+            value={fileUrl}
             onChange={(value) => {
-              setReport(value);
+              setFileUrl(value);
             }}
           />
         </div>
@@ -94,21 +97,21 @@ export default function WebDevelopment(props: {
       <Button
         variant="outlined"
         onClick={async () => {
-          if (report === '') {
-            alert('Provide a valid url to the blog.');
+          if (report === "") {
+            alert("Provide a valid url to the blog.");
           } else {
             if (file === undefined) {
-              alert('Upload a valid task');
+              alert("Upload a valid task");
             } else {
               const url = `contents/${props.user}/web/${file.name}`;
               setLoader(true);
               await getBase64(file).then(async (data) => {
                 await props.octokit.rest.repos.createOrUpdateFileContents({
-                  owner: 'dsc-gitam',
-                  repo: 'recruitment-tasks-23',
+                  owner: "dsc-gitam",
+                  repo: "recruitment-tasks-23",
                   path: url,
-                  message: 'Commit with REST',
-                  content: btoa(atob(data.split(',')[1])),
+                  message: "Commit with REST",
+                  content: btoa(atob(data.split(",")[1])),
                   committer: {
                     name: props.user,
                     email: props.email,
@@ -119,7 +122,7 @@ export default function WebDevelopment(props: {
                 JSON.stringify({
                   report: report,
                   recording: recording,
-                  file: url,
+                  file: fileUrl === "" ? url : fileUrl,
                 })
               );
 
