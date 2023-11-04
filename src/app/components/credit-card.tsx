@@ -1,4 +1,53 @@
-export default function CreditCard(props) {
+import {
+  ReactElement,
+  JSXElementConstructor,
+  ReactNode,
+  ReactPortal,
+  PromiseLikeOfReactNode,
+} from "react";
+
+export default function CreditCard(props: {
+  image: string | undefined;
+  name:
+    | string
+    | number
+    | boolean
+    | ReactElement<any, string | JSXElementConstructor<any>>
+    | Iterable<ReactNode>
+    | ReactPortal
+    | PromiseLikeOfReactNode
+    | null
+    | undefined;
+  role:
+    | string
+    | number
+    | boolean
+    | ReactElement<any, string | JSXElementConstructor<any>>
+    | Iterable<ReactNode>
+    | PromiseLikeOfReactNode
+    | null
+    | undefined;
+  title:
+    | string
+    | number
+    | boolean
+    | ReactElement<any, string | JSXElementConstructor<any>>
+    | Iterable<ReactNode>
+    | ReactPortal
+    | PromiseLikeOfReactNode
+    | null
+    | undefined;
+  secondaryRole:
+    | string
+    | number
+    | boolean
+    | ReactElement<any, string | JSXElementConstructor<any>>
+    | Iterable<ReactNode>
+    | ReactPortal
+    | PromiseLikeOfReactNode
+    | null
+    | undefined;
+}) {
   return (
     <div className="flex">
       <img src={props.image} className="h-20 rounded-full mr-8" />
