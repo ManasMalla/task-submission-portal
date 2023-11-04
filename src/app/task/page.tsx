@@ -717,49 +717,100 @@ export default function Task() {
           </StyledEngineProvider>
           <Button
             variant="contained"
-            disabled={ableToSubmitApplication}
             onClick={async () => {
-              const request = await octokit.request(
-                "GET /repos/dsc-gitam/recruitment-tasks-23/contents/applications.json",
-                {
-                  owner: "dsc-gitam",
-                  repo: "recruitment-tasks-23",
-                  path: "contents/applications.json",
-                  headers: {
-                    "X-GitHub-Api-Version": "2022-11-28",
-                  },
+              if (responses === undefined) {
+                alert("You haven't uploaded even a single task.");
+              } else if (ableToSubmitApplication) {
+                const request = await octokit.request(
+                  "GET /repos/dsc-gitam/recruitment-tasks-23/contents/applications.json",
+                  {
+                    owner: "dsc-gitam",
+                    repo: "recruitment-tasks-23",
+                    path: "contents/applications.json",
+                    headers: {
+                      "X-GitHub-Api-Version": "2022-11-28",
+                    },
+                  }
+                );
+                const sha = request.data["sha"];
+                const content = atob(request.data["content"]);
+                const data = JSON.parse(content);
+                data["applications"].push({
+                  user: email,
+                  responses: responses,
+                });
+                const application = JSON.stringify(data, null, 2);
+                await octokit.request(
+                  "PUT /repos/dsc-gitam/recruitment-tasks-23/contents/applications.json",
+                  {
+                    owner: "dsc-gitam",
+                    repo: "recruitment-tasks-23",
+                    path: "contents/applications.json",
+                    message: `Submit ${userdata.Name}'s application`,
+                    committer: {
+                      name: userdata.Name,
+                      email: email,
+                    },
+                    content: btoa(application),
+                    sha: sha,
+                    headers: {
+                      "X-GitHub-Api-Version": "2022-11-28",
+                    },
+                  }
+                );
+                checkApplicationStatus(true);
+                localStorage.clear();
+                alert("Submitted Application Successfully");
+                router.push("/");
+              } else {
+                if (
+                  confirm(
+                    "Are you sure you want to submit the application? You stil have a few tasks pending and you cannot edit it after submission."
+                  )
+                ) {
+                  const request = await octokit.request(
+                    "GET /repos/dsc-gitam/recruitment-tasks-23/contents/applications.json",
+                    {
+                      owner: "dsc-gitam",
+                      repo: "recruitment-tasks-23",
+                      path: "contents/applications.json",
+                      headers: {
+                        "X-GitHub-Api-Version": "2022-11-28",
+                      },
+                    }
+                  );
+                  const sha = request.data["sha"];
+                  const content = atob(request.data["content"]);
+                  const data = JSON.parse(content);
+                  data["applications"].push({
+                    user: email,
+                    responses: responses,
+                  });
+                  const application = JSON.stringify(data, null, 2);
+                  await octokit.request(
+                    "PUT /repos/dsc-gitam/recruitment-tasks-23/contents/applications.json",
+                    {
+                      owner: "dsc-gitam",
+                      repo: "recruitment-tasks-23",
+                      path: "contents/applications.json",
+                      message: `Submit ${userdata.Name}'s application`,
+                      committer: {
+                        name: userdata.Name,
+                        email: email,
+                      },
+                      content: btoa(application),
+                      sha: sha,
+                      headers: {
+                        "X-GitHub-Api-Version": "2022-11-28",
+                      },
+                    }
+                  );
+                  checkApplicationStatus(true);
+                  localStorage.clear();
+                  alert("Submitted Application Successfully");
+                  router.push("/");
                 }
-              );
-              const sha = request.data["sha"];
-              const content = atob(request.data["content"]);
-              const data = JSON.parse(content);
-              data["applications"].push({
-                user: email,
-                responses: responses,
-              });
-              const application = JSON.stringify(data, null, 2);
-              await octokit.request(
-                "PUT /repos/dsc-gitam/recruitment-tasks-23/contents/applications.json",
-                {
-                  owner: "dsc-gitam",
-                  repo: "recruitment-tasks-23",
-                  path: "contents/applications.json",
-                  message: `Submit ${userdata.Name}'s application`,
-                  committer: {
-                    name: userdata.Name,
-                    email: email,
-                  },
-                  content: btoa(application),
-                  sha: sha,
-                  headers: {
-                    "X-GitHub-Api-Version": "2022-11-28",
-                  },
-                }
-              );
-              checkApplicationStatus(true);
-              localStorage.clear();
-              alert("Submitted Application Successfully");
-              router.push("/");
+              }
             }}
           >
             Submit Application
