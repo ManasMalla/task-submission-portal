@@ -4,13 +4,13 @@ import {
   InputAdornment,
   Radio,
   TextField,
-} from '@mui/material';
-import { Edit3, Link } from 'react-feather';
-import FileTask from '../file-upload';
-import { useState } from 'react';
-import { Octokit } from 'octokit';
-import { getBase64 } from '../get_base64';
-import LinkEditText from '../link-edit-text';
+} from "@mui/material";
+import { Edit3, Link } from "react-feather";
+import FileTask from "../file-upload";
+import { useState } from "react";
+import { Octokit } from "octokit";
+import { getBase64 } from "../get_base64";
+import LinkEditText from "../link-edit-text";
 
 export default function Hosting(props: {
   radioIndex: number;
@@ -21,11 +21,11 @@ export default function Hosting(props: {
   email: string;
   octokit: Octokit;
 }) {
-  const [speech, setSpeech] = useState('');
+  const [speech, setSpeech] = useState("");
 
   const [file, setFile] = useState<File | undefined>(undefined);
   const [isLoading, setLoader] = useState(false);
-  const [fileUrl, setFileUrl] = useState('');
+  const [fileUrl, setFileUrl] = useState("");
   const [fileSizeExceedsLimit, setFileSizeExceedsLimit] = useState(false);
 
   const onFileSelected = (selectedFile: File) => {
@@ -79,8 +79,8 @@ export default function Hosting(props: {
           {!fileSizeExceedsLimit && (
             <FileTask
               user={props.user}
-              domain={'hosting'}
-              taskName={'hosting'}
+              domain={"hosting"}
+              taskName={"hosting"}
               onFileSelected={onFileSelected}
             />
           )}
@@ -103,21 +103,19 @@ export default function Hosting(props: {
       <Button
         variant="outlined"
         onClick={async () => {
-          if (speech === '') {
-            alert('Provide a valid url to the blog.');
+          if (speech === "") {
+            alert("Provide a valid url to the blog.");
           } else {
-            if (file === undefined || fileUrl === '') {
-              alert('Upload a valid task');
-            } else {
+            if (file !== undefined) {
               const url = `contents/${props.user}/hosting/${file.name}`;
               setLoader(true);
               await getBase64(file).then(async (data) => {
                 await props.octokit.rest.repos.createOrUpdateFileContents({
-                  owner: 'dsc-gitam',
-                  repo: 'recruitment-tasks-23',
+                  owner: "dsc-gitam",
+                  repo: "recruitment-tasks-23",
                   path: url,
-                  message: 'Commit with REST',
-                  content: btoa(atob(data.split(',')[1])),
+                  message: "Commit with REST",
+                  content: btoa(atob(data.split(",")[1])),
                   committer: {
                     name: props.user,
                     email: props.email,
@@ -127,11 +125,23 @@ export default function Hosting(props: {
               props.setResponse(
                 JSON.stringify({
                   speech: speech,
-                  file: fileUrl === '' ? url : fileUrl,
+                  file: url,
                 })
               );
               setLoader(false);
-              alert(`Submitted task for hosting domain!`);
+              alert(`Submitted task for Hosting domain!`);
+            } else if (fileUrl !== "") {
+              setLoader(true);
+              props.setResponse(
+                JSON.stringify({
+                  speech: speech,
+                  file: fileUrl,
+                })
+              );
+              setLoader(false);
+              alert(`Submitted task for Hosting domain!`);
+            } else {
+              alert("Please upload a file or provide a valid url.");
             }
           }
         }}

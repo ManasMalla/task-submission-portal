@@ -4,13 +4,13 @@ import {
   InputAdornment,
   Radio,
   TextField,
-} from '@mui/material';
-import { Link } from 'react-feather';
-import FileTask from '../file-upload';
-import { useState } from 'react';
-import { Octokit } from 'octokit';
-import { getBase64 } from '../get_base64';
-import LinkEditText from '../link-edit-text';
+} from "@mui/material";
+import { Link } from "react-feather";
+import FileTask from "../file-upload";
+import { useState } from "react";
+import { Octokit } from "octokit";
+import { getBase64 } from "../get_base64";
+import LinkEditText from "../link-edit-text";
 
 export default function Logistics(props: {
   radioIndex: number;
@@ -23,7 +23,7 @@ export default function Logistics(props: {
 }) {
   const [file, setFile] = useState<File | undefined>(undefined);
   const [isLoading, setLoader] = useState(false);
-  const [fileUrl, setFileUrl] = useState('');
+  const [fileUrl, setFileUrl] = useState("");
   const [fileSizeExceedsLimit, setFileSizeExceedsLimit] = useState(false);
 
   const onFileSelected = (selectedFile: File) => {
@@ -54,8 +54,8 @@ export default function Logistics(props: {
       {!fileSizeExceedsLimit && (
         <FileTask
           user={props.user}
-          domain={'logistics'}
-          taskName={'logistics'}
+          domain={"logistics"}
+          taskName={"logistics"}
           onFileSelected={onFileSelected}
         />
       )}
@@ -76,18 +76,16 @@ export default function Logistics(props: {
       <Button
         variant="outlined"
         onClick={async () => {
-          if (file === undefined || fileUrl === '') {
-            alert('Upload a valid task');
-          } else {
+          if (file !== undefined) {
             const url = `contents/${props.user}/logistics/${file.name}`;
             setLoader(true);
             await getBase64(file).then(async (data) => {
               await props.octokit.rest.repos.createOrUpdateFileContents({
-                owner: 'dsc-gitam',
-                repo: 'recruitment-tasks-23',
+                owner: "dsc-gitam",
+                repo: "recruitment-tasks-23",
                 path: url,
-                message: 'Commit with REST',
-                content: btoa(atob(data.split(',')[1])),
+                message: "Commit with REST",
+                content: btoa(atob(data.split(",")[1])),
                 committer: {
                   name: props.user,
                   email: props.email,
@@ -96,11 +94,22 @@ export default function Logistics(props: {
             });
             props.setResponse(
               JSON.stringify({
-                file: fileUrl === '' ? url : fileUrl,
+                file: url,
               })
             );
             setLoader(false);
             alert(`Submitted task for logistics domain!`);
+          } else if (fileUrl !== "") {
+            setLoader(true);
+            props.setResponse(
+              JSON.stringify({
+                file: fileUrl,
+              })
+            );
+            setLoader(false);
+            alert(`Submitted task for logistics domain!`);
+          } else {
+            alert("Please upload a file or provide a valid url.");
           }
         }}
       >

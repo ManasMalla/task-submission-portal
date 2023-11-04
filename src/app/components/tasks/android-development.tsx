@@ -1,17 +1,17 @@
-'use client';
+"use client";
 import {
   Button,
   CircularProgress,
   InputAdornment,
   Radio,
   TextField,
-} from '@mui/material';
-import { Link } from 'react-feather';
-import FileTask from '../file-upload';
-import { use, useState } from 'react';
-import LinkEditText from '../link-edit-text';
-import { Octokit } from 'octokit';
-import { getBase64 } from '../get_base64';
+} from "@mui/material";
+import { Link } from "react-feather";
+import FileTask from "../file-upload";
+import { use, useState } from "react";
+import LinkEditText from "../link-edit-text";
+import { Octokit } from "octokit";
+import { getBase64 } from "../get_base64";
 
 export default function AndroidDevelopment(props: {
   radioIndex: number;
@@ -23,10 +23,10 @@ export default function AndroidDevelopment(props: {
   octokit: Octokit;
 }) {
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [fileUrl, setFileUrl] = useState('');
+  const [fileUrl, setFileUrl] = useState("");
   const [fileSizeExceedsLimit, setFileSizeExceedsLimit] = useState(false);
-  const [report, setReport] = useState('');
-  const [recording, setRecording] = useState('');
+  const [report, setReport] = useState("");
+  const [recording, setRecording] = useState("");
   const [isLoading, setLoader] = useState(false);
 
   const onFileSelected = (selectedFile: File) => {
@@ -80,7 +80,7 @@ export default function AndroidDevelopment(props: {
       </p>
       <FileTask
         user={props.user}
-        domain={'android'}
+        domain={"android"}
         taskName={undefined}
         onFileSelected={onFileSelected}
       />
@@ -101,7 +101,7 @@ export default function AndroidDevelopment(props: {
       <div>Brief Report</div>
       <p>
         Provide a brief report on the app’s working and developer journey
-        through a blog on Medium/HashNode.{' '}
+        through a blog on Medium/HashNode.{" "}
       </p>
       <LinkEditText
         value={report}
@@ -123,21 +123,19 @@ export default function AndroidDevelopment(props: {
       <Button
         variant="outlined"
         onClick={async () => {
-          if (report === '') {
-            alert('Provide a valid url to the blog.');
+          if (report === "") {
+            alert("Provide a valid url to the blog.");
           } else {
-            if (file === undefined || fileUrl === '') {
-              alert('Upload a valid task');
-            } else {
+            if (file !== undefined) {
               const url = `contents/${props.user}/android/${file.name}`;
               setLoader(true);
               await getBase64(file).then(async (data) => {
                 await props.octokit.rest.repos.createOrUpdateFileContents({
-                  owner: 'dsc-gitam',
-                  repo: 'recruitment-tasks-23',
+                  owner: "dsc-gitam",
+                  repo: "recruitment-tasks-23",
                   path: url,
-                  message: 'Commit with REST',
-                  content: btoa(atob(data.split(',')[1])),
+                  message: "Commit with REST",
+                  content: btoa(atob(data.split(",")[1])),
                   committer: {
                     name: props.user,
                     email: props.email,
@@ -148,11 +146,24 @@ export default function AndroidDevelopment(props: {
                 JSON.stringify({
                   report: report,
                   recording: recording,
-                  file: fileUrl === '' ? url : fileUrl,
+                  file: url,
                 })
               );
               setLoader(false);
               alert(`Submitted task for Android domain!`);
+            } else if (fileUrl !== "") {
+              setLoader(true);
+              props.setResponse(
+                JSON.stringify({
+                  report: report,
+                  recording: recording,
+                  file: fileUrl,
+                })
+              );
+              setLoader(false);
+              alert(`Submitted task for Android domain!`);
+            } else {
+              alert("Please upload a file or provide a valid url.");
             }
           }
         }}

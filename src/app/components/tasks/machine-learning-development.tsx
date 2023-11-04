@@ -4,13 +4,13 @@ import {
   InputAdornment,
   Radio,
   TextField,
-} from '@mui/material';
-import { Link } from 'react-feather';
-import FileTask from '../file-upload';
-import LinkEditText from '../link-edit-text';
-import { useState } from 'react';
-import { Octokit } from 'octokit';
-import { getBase64 } from '../get_base64';
+} from "@mui/material";
+import { Link } from "react-feather";
+import FileTask from "../file-upload";
+import LinkEditText from "../link-edit-text";
+import { useState } from "react";
+import { Octokit } from "octokit";
+import { getBase64 } from "../get_base64";
 
 export default function MachineLearningDevelopment(props: {
   radioIndex: number;
@@ -22,9 +22,9 @@ export default function MachineLearningDevelopment(props: {
   octokit: Octokit;
 }) {
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [report, setReport] = useState('');
+  const [report, setReport] = useState("");
   const [isLoading, setLoader] = useState(false);
-  const [fileUrl, setFileUrl] = useState('');
+  const [fileUrl, setFileUrl] = useState("");
   const [fileSizeExceedsLimit, setFileSizeExceedsLimit] = useState(false);
 
   const onFileSelected = (selectedFile: File) => {
@@ -53,8 +53,8 @@ export default function MachineLearningDevelopment(props: {
       {!fileSizeExceedsLimit && (
         <FileTask
           user={props.user}
-          domain={'machine-learning'}
-          taskName={'model'}
+          domain={"machine-learning"}
+          taskName={"model"}
           onFileSelected={onFileSelected}
         />
       )}
@@ -86,21 +86,19 @@ export default function MachineLearningDevelopment(props: {
       <Button
         variant="outlined"
         onClick={async () => {
-          if (report === '') {
-            alert('Provide a valid url to the blog.');
+          if (report === "") {
+            alert("Provide a valid url to the blog.");
           } else {
-            if (file === undefined || fileUrl === '') {
-              alert('Upload a valid task');
-            } else {
-              const url = `contents/${props.user}/machinelearning/${file.name}`;
+            if (file !== undefined) {
+              const url = `contents/${props.user}/machine-learning/${file.name}`;
               setLoader(true);
               await getBase64(file).then(async (data) => {
                 await props.octokit.rest.repos.createOrUpdateFileContents({
-                  owner: 'dsc-gitam',
-                  repo: 'recruitment-tasks-23',
+                  owner: "dsc-gitam",
+                  repo: "recruitment-tasks-23",
                   path: url,
-                  message: 'Commit with REST',
-                  content: btoa(atob(data.split(',')[1])),
+                  message: "Commit with REST",
+                  content: btoa(atob(data.split(",")[1])),
                   committer: {
                     name: props.user,
                     email: props.email,
@@ -110,11 +108,23 @@ export default function MachineLearningDevelopment(props: {
               props.setResponse(
                 JSON.stringify({
                   report: report,
-                  file: fileUrl === '' ? url : fileUrl,
+                  file: url,
                 })
               );
               setLoader(false);
               alert(`Submitted task for Machine Learning domain!`);
+            } else if (fileUrl !== "") {
+              setLoader(true);
+              props.setResponse(
+                JSON.stringify({
+                  report: report,
+                  file: fileUrl,
+                })
+              );
+              setLoader(false);
+              alert(`Submitted task for Machine Learning domain!`);
+            } else {
+              alert("Please upload a file or provide a valid url.");
             }
           }
         }}

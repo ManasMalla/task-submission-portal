@@ -23,7 +23,7 @@ export default function Creatives(props: {
 }) {
   const [reel, setReelUrl] = useState("");
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [file2, setFile2] = useState<File | undefined>(undefined); 
+  const [file2, setFile2] = useState<File | undefined>(undefined);
   const [fileUrl, setFileUrl] = useState("");
   const [fileUrl2, setFileUrl2] = useState("");
   const [fileSizeExceedsLimit, setFileSizeExceedsLimit] = useState(false);
@@ -57,27 +57,27 @@ export default function Creatives(props: {
           </b>
           <div className="my-2"></div>
           {!fileSizeExceedsLimit && (
-        <FileTask
-          user={props.user}
-          domain={"web"}
-          taskName={"website code"}
-          onFileSelected={onFileSelected}
-        />
-      )}
-      {fileSizeExceedsLimit && (
-        <div className="text-center">
-          <p className="text-lg text-red-500">
-            The file size exceeds the limit of 5MB. Please upload a google drive
-            link.
-          </p>
-          <LinkEditText
-            value={fileUrl}
-            onChange={(value) => {
-              setFileUrl(value);
-            }}
-          />
-        </div>
-      )}
+            <FileTask
+              user={props.user}
+              domain={"web"}
+              taskName={"website code"}
+              onFileSelected={onFileSelected}
+            />
+          )}
+          {fileSizeExceedsLimit && (
+            <div className="text-center">
+              <p className="text-lg text-red-500">
+                The file size exceeds the limit of 5MB. Please upload a google
+                drive link.
+              </p>
+              <LinkEditText
+                value={fileUrl}
+                onChange={(value) => {
+                  setFileUrl(value);
+                }}
+              />
+            </div>
+          )}
         </li>
         <li>
           <b>
@@ -99,27 +99,27 @@ export default function Creatives(props: {
           <b>Prepare an infographic sharing your findings and learnings.</b>
 
           {!fileSizeExceedsLimit && (
-        <FileTask
-          user={props.user}
-          domain={"creatives"}
-          taskName={"creatives"}
-          onFileSelected={onFileSelected}
-        />
-      )}
-      {fileSizeExceedsLimit && (
-        <div className="text-center">
-          <p className="text-lg text-red-500">
-            The file size exceeds the limit of 5MB. Please upload a google drive
-            link.
-          </p>
-          <LinkEditText
-            value={fileUrl2}
-            onChange={(value) => {
-              setFileUrl2(value);
-            }}
-          />
-        </div>
-      )}
+            <FileTask
+              user={props.user}
+              domain={"creatives"}
+              taskName={"creatives"}
+              onFileSelected={onFileSelected}
+            />
+          )}
+          {fileSizeExceedsLimit && (
+            <div className="text-center">
+              <p className="text-lg text-red-500">
+                The file size exceeds the limit of 5MB. Please upload a google
+                drive link.
+              </p>
+              <LinkEditText
+                value={fileUrl2}
+                onChange={(value) => {
+                  setFileUrl2(value);
+                }}
+              />
+            </div>
+          )}
         </li>
       </ol>
       <p>
@@ -132,25 +132,22 @@ export default function Creatives(props: {
           if (reel === "") {
             alert("Provide a valid url to the reel.");
           } else {
-            if ((file === undefined ||  fileUrl === '') || ( file2 === undefined || fileUrl2 === '')) {
-              alert("Upload a valid task");
+            var url = fileUrl;
+            var url2 = fileUrl2;
+            if (file !== undefined) {
+              url = `contents/${props.user}/creatives/${file.name}`;
+            }
+            if (file2 !== undefined) {
+              url2 = `contents/${props.user}/creatives/${file2.name}`;
+            }
+            if (url2 === "") {
+              alert("Provide a valid file/url to the infographic.");
+            } else if (url2 === "") {
+              alert("Provide a valid file/url to the infographic.");
             } else {
-              const url = `contents/${props.user}/creatives/${file.name}`;
-              const url2 = `contents/${props.user}/creatives/${file2.name}`;
               setLoader(true);
-              const data2 = await getBase64(file2);
-              await getBase64(file).then(async (data) => {
-                await props.octokit.rest.repos.createOrUpdateFileContents({
-                  owner: "dsc-gitam",
-                  repo: "recruitment-tasks-23",
-                  path: url,
-                  message: "Commit with REST",
-                  content: btoa(atob(data.split(",")[1])),
-                  committer: {
-                    name: props.user,
-                    email: props.email,
-                  },
-                });
+              if (file2 != undefined) {
+                const data2 = await getBase64(file2);
                 await props.octokit.rest.repos.createOrUpdateFileContents({
                   owner: "dsc-gitam",
                   repo: "recruitment-tasks-23",
@@ -162,12 +159,27 @@ export default function Creatives(props: {
                     email: props.email,
                   },
                 });
-              });
+              }
+              if (file !== undefined) {
+                await getBase64(file).then(async (data) => {
+                  await props.octokit.rest.repos.createOrUpdateFileContents({
+                    owner: "dsc-gitam",
+                    repo: "recruitment-tasks-23",
+                    path: url,
+                    message: "Commit with REST",
+                    content: btoa(atob(data.split(",")[1])),
+                    committer: {
+                      name: props.user,
+                      email: props.email,
+                    },
+                  });
+                });
+              }
               props.setResponse(
                 JSON.stringify({
                   reel: reel,
-                  file: fileUrl === "" ? url : fileUrl,
-                  file2: fileUrl2 === "" ? url2 : fileUrl2,
+                  file: url,
+                  file2: url2,
                 })
               );
               setLoader(false);
