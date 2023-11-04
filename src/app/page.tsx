@@ -44,8 +44,8 @@ export default function Home() {
         className="w-full h-screen object-top object-cover overflow-clip"
       />
       <div className="w-full h-screen bg-black opacity-[55%] absolute z-10" />
-      <div className="absolute z-20 text-white">
-        <div className="px-6 py-6 lg:p-12">
+      <div className="absolute z-20 text-white bottom-8">
+        <div className="px-6 py-3 lg:p-12">
           {" "}
           <div className="flex">
             <img src="logo-gdg.png" className="h-8 mr-4" />
