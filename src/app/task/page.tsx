@@ -151,6 +151,7 @@ export default function Task() {
             share your interest here
           </a>
         </p>
+        <a href='/' className='py-2 px-8 cursor-pointer bg-amber-500 rounded-full mt-10 text-white' >Back Home</a>
       </main>
     </ThemeProvider>
   ) : (
