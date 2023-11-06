@@ -1,12 +1,13 @@
-"use client";
+'use client';
 
-import { DM_Sans } from "next/font/google";
-import { jwtDecode } from "jwt-decode";
-import GoogleSSO from "./components/google-sso";
-import { useRouter } from "next/navigation";
-import Script from "next/script";
+import { DM_Sans } from 'next/font/google';
+import { jwtDecode } from 'jwt-decode';
+import GoogleSSO from './components/google-sso';
+import { useRouter } from 'next/navigation';
+import Script from 'next/script';
+import { Octokit } from 'octokit';
 
-const dmSans = DM_Sans({ subsets: ["latin"] });
+const dmSans = DM_Sans({ subsets: ['latin'] });
 export type dataCredential = {
   aud: string;
   azp: string;
@@ -29,6 +30,11 @@ export default function Home() {
   //   console.log(gs);
   //   router.push("/task");
   // };
+
+  const octokit = new Octokit({
+    auth: process.env.NEXT_PUBLIC_API_KEY,
+  });
+  
   return (
     <main
       className={`flex overflow-y-clip h-screen flex-col lg:flex-row lg:items-end justify-end lg:justify-between ${dmSans.className}`}
@@ -46,7 +52,7 @@ export default function Home() {
       <div className="w-full h-screen bg-black opacity-[55%] absolute z-10" />
       <div className="absolute z-20 text-white bottom-8">
         <div className="px-6 py-3 lg:p-12">
-          {" "}
+          {' '}
           <div className="flex">
             <img src="logo-gdg.png" className="h-8 mr-4" />
             <div>
@@ -83,12 +89,34 @@ export default function Home() {
             data-logo_alignment="left"
           ></div> */}
           <GoogleSSO
-            onSuccess={(res) => {
-              window.localStorage.setItem(
-                "email",
-                (jwtDecode(res.credential) as dataCredential).email
+            onSuccess={async (res) => {
+              const email = (jwtDecode(res.credential) as dataCredential).email;
+
+              const request = await octokit.request(
+                'GET /repos/dsc-gitam/recruitment-tasks-23/contents/applications.json',
+                {
+                  owner: 'dsc-gitam',
+                  repo: 'recruitment-tasks-23',
+                  path: 'contents/applications.json',
+                  headers: {
+                    'X-GitHub-Api-Version': '2022-11-28',
+                  },
+                }
               );
-              router.push("/task");
+              const content = atob(request.data['content']);
+              const data = JSON.parse(content);
+              window.localStorage.setItem('email', email);
+              if (
+                data['applications'].filter((app: any) => app.user === email)
+                  .length === 0 ||
+                data['applications']
+                  .filter((app: any) => app.user === email)[0]
+                  .responses.filter((res: any) => res !== undefined).length === 0
+              ) {
+                router.push('/task');
+              } else {
+                router.push('/success')
+              }
             }}
           />
         </div>
