@@ -103,7 +103,14 @@ export default function Creatives(props: {
               user={props.user}
               domain={"creatives"}
               taskName={"creatives"}
-              onFileSelected={onFileSelected}
+              onFileSelected={(selectedFile) => {
+                if (selectedFile.size > 5 * 1024 * 1024) {
+                  setFileSizeExceedsLimit(true);
+                } else {
+                  setFile2(selectedFile);
+                  setFileSizeExceedsLimit(false);
+                }
+              }}
             />
           )}
           {fileSizeExceedsLimit && (
